@@ -15,35 +15,43 @@ async def cmd_start(message: Message):
     await message.answer('Добро пожаловать в торговый дом - "Славянский базар"!', reply_markup=kb.main)
     # await message.reply('Как дела!')
 
+
 @router.message(Command('help'))
 async def cmd_help(message: Message):
     await message.answer('Вы нажали на кнопку помощи!')
 
+
 @router.message(F.text == 'Товары')
 async def cmd_test(message: Message):
-    await message.answer('Выберите категорию товара', reply_markup =  await kb.kb_products())
+    await message.answer('Выберите категорию товара', reply_markup=await kb.kb_products())
 
 
 @router.message(F.text == 'Услуги')
 async def cmd_test(message: Message):
-    await message.answer('Выберите категорию услуг', reply_markup = await kb.kb_services())
+    await message.answer('Выберите категорию услуг', reply_markup=await kb.kb_services())
+
 
 ###########################################
 # CallBacks for Products && Services
 ###########################################
 
 async def choose_city(callback: CallbackQuery):
-    await callback.message.edit_text('Выберите город', reply_markup = await kb.kb_cities())
+    await callback.message.edit_text('Выберите город', reply_markup=await kb.kb_cities())
+
 
 def product_callback(product_name: str):
     async def callback_func(callback: CallbackQuery):
         await choose_city(callback)
+
     return callback_func
+
 
 def service_callback(service_name: str):
     async def callback_func(callback: CallbackQuery):
         await choose_city(callback)
+
     return callback_func
+
 
 # Callbacks for products
 product_names = ['Продовольственные товары', 'Бытовая химия', 'Стройматериалы', 'Автозапчасти']
