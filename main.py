@@ -4,11 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 
 from app.handlers import router
-from logger.logger import setup_logger
 
-
-
-logger = setup_logger('log_file.log')
 logging.basicConfig(level=logging.INFO)
 
 async def main():

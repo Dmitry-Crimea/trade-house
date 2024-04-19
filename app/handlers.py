@@ -21,24 +21,40 @@ async def cmd_help(message: Message):
 
 @router.message(F.text == 'Товары')
 async def cmd_test(message: Message):
-    await message.answer('Выберите категорию товара', reply_markup =  kb.products)
+    await message.answer('Выберите категорию товара', reply_markup =  await kb.kb_products())
+
 
 @router.message(F.text == 'Услуги')
 async def cmd_test(message: Message):
-    await message.answer('Выберите категорию услуг', reply_markup =  kb.services)
+    await message.answer('Выберите категорию услуг', reply_markup = await kb.kb_services())
 
-@router.callback_query(F.data == 'food_producrts')
-async def food_producrts(callback: CallbackQuery):
-    # await callback.answer('Выберите город', show_alert=True)
-    await callback.message.edit_text('Выберите город', reply_markup = await kb.user_cities())
+###########################################
+# CallBacks for Products && Services
+###########################################
 
+async def choose_city(callback: CallbackQuery):
+    await callback.message.edit_text('Выберите город', reply_markup = await kb.kb_cities())
 
-# @router.callback_query(F.data == 'household_chemicals')
-# async def household_chemicals(callback: CallbackQuery):
-#     await callback.answer('Вы выбрали категорию товара "Бытовая химия"', show_alert=True)
-#     await callback.message.answer('Вы выбрали категорию товара "Бытовая химия"')
-#
-# @router.callback_query(F.data == 'building_materials')
-# async def building_materials(callback: CallbackQuery):
-#     await callback.answer('Вы выбрали категорию товара "Строительные материалы"', show_alert=True)
-#     await callback.message.answer('Вы выбрали категорию товара "Строительные материалы"')
+def product_callback(product_name: str):
+    async def callback_func(callback: CallbackQuery):
+        await choose_city(callback)
+    return callback_func
+
+def service_callback(service_name: str):
+    async def callback_func(callback: CallbackQuery):
+        await choose_city(callback)
+    return callback_func
+
+# Callbacks for products
+product_names = ['Продовольственные товары', 'Бытовая химия', 'Стройматериалы', 'Автозапчасти']
+for product_name in product_names:
+    callback_name = f'product_{product_name}'
+    callback_func = product_callback(product_name)
+    router.callback_query(F.data == callback_name)(callback_func)
+
+# Callbacks for services
+service_names = ['СТО', 'Юридические услуги', 'Строительство', 'Тепло/водоснабжение', 'Электрика']
+for service_name in service_names:
+    callback_name = f'service_{service_name}'
+    callback_func = service_callback(service_name)
+    router.callback_query(F.data == callback_name)(callback_func)
