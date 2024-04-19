@@ -1,6 +1,12 @@
+import logging
+
 from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton,
                            InlineKeyboardMarkup, InlineKeyboardButton)
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+
+from app.database.requests import get_categories, get_category_item
+
+logging.basicConfig(level=logging.INFO)
 
 main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='Товары')],
                                      [KeyboardButton(text='Услуги')],
@@ -8,45 +14,20 @@ main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='Товары')],
                            resize_keyboard=True,
                            input_field_placeholder='Выберите пункт меню...')
 
-###########################################
-# Keyboard for products
-###########################################
-products = ['Продовольственные товары', 'Бытовая химия',
-            'Стройматериалы', 'Автозапчасти']
+
+async def categories():
+    all_categories = await get_categories()
+
+    for category in all_categories:
+        keyboard.add(InlineKeyboardButton(text=category.name, callback_data=f'category_{category.id}'))
+    keyboard.add(InlineKeyboardButton(text='На главную', callback_data='to_main'))
+    return keyboard.adjust(1).as_markup
 
 
-async def kb_products():
-    keyboard = InlineKeyboardBuilder()
-    for product in products:
-        keyboard.add(InlineKeyboardButton(text=product, callback_data=f'product_{product}'))
-    return keyboard.adjust(1).as_markup()
+async def items(category_id):
+    all_items = await get_category_item(category_id)
 
-
-###########################################
-# Keyboard for services
-###########################################
-services = ['СТО', 'Юридические услуги', 'Строительство',
-            'Тепло/водоснабжение', 'Электрика']
-
-
-async def kb_services():
-    keyboard = InlineKeyboardBuilder()
-    for service in services:
-        keyboard.add(InlineKeyboardButton(text=service, callback_data=f'service_{service}'))
-    return keyboard.adjust(1).as_markup()
-
-
-###########################################
-# Keyboard for Cities
-########################################### 
-cities = ['Алупка', 'Алушта', 'Армянск', 'Балаклава',
-          'Балаклава', 'Бахчисарай', 'Белогорск', 'Евпатория',
-          'Керч', 'Саки', 'Севастополь', 'Симферополь',
-          'Судак', 'Черноморское', 'Ялта']
-
-
-async def kb_cities():
-    keyboard = InlineKeyboardBuilder()
-    for city in cities:
-        keyboard.add(InlineKeyboardButton(text=city, callback_data=f'city_{city}'))
-    return keyboard.adjust(3).as_markup()
+    for item in all_items:
+        keyboard.add(InlineKeyboardButton(text=item.name, callback_data=f'item_{item.id}'))
+    keyboard.add(InlineKeyboardButton(text='На главную', callback_data='to_main'))
+    return keyboard.adjust(1).as_markup
