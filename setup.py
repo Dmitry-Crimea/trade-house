@@ -5,9 +5,6 @@ setup(
     version='1.0.0',
     author='Dmitry Brykin',
     author_email='red_r2005@mail.ru',
-    description='This is a sample package',
-    long_description='Long description of the package',
-    long_description_content_type='text/markdown',
     url='https://github.com/Dmitry-Crimea/trade-house.git',
     packages=find_packages(),
     install_requires=[
