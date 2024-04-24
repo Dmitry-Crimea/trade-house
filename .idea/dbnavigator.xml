@@ -17,7 +17,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="857a7e70-2ee7-419c-9221-5166f8beab3b">
-      <console name="Connection" type="STANDARD" schema="" session="Main" />
+      <console name="Connection" type="STANDARD" schema="main" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -31,6 +31,11 @@
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="857a7e70-2ee7-419c-9221-5166f8beab3b" dataset="main.users" active-filter-id="" />
+    <filter-actions connection-id="857a7e70-2ee7-419c-9221-5166f8beab3b" dataset="main.cities" active-filter-id="77998ca7-64bd-4bdd-b74c-e755cebe60ea">
+      <filter id="77998ca7-64bd-4bdd-b74c-e755cebe60ea" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="id" operator="=" value="" active="true" />
+      </filter>
+    </filter-actions>
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
@@ -526,5 +531,9 @@
         </visibility-settings>
       </environment>
     </general-settings>
+  </component>
+  <component name="DBNavigator.Project.StatementExecutionManager">
+    <execution-variables />
+    <execution-variable-types />
   </component>
 </project>

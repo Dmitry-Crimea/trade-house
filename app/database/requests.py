@@ -23,30 +23,18 @@ async def get_cities():
     async with async_session() as session:
         return await session.scalars(select(City))
 
-async def get_product_item(product_name):
+async def get_item(item_id):
     async with async_session() as session:
-        return await session.scalars(select(Item).where(Item.product == product_name))
+        return await session.scalar(select(Item).where(Item.id == item_id))
 
-async def get_city_item(city_id):
+async def get_item_product(city, product_category):
     async with async_session() as session:
-        return await session.scalar(select(Item).where(Item.city == city_id))
+        result = await session.scalars(select(Item).where((Item.city == city) &
+                                                          (Item.product == product_category)))
+        return result
 
-async def get_service_item(service_name):
+async def get_item_service(city, service_category):
     async with async_session() as session:
-        return await session.scalars(select(Item).where(Item.service == service_name))
-
-# async def get_item(item_id):
-#     async with async_session() as session:
-#         return await session.scalar(select(Item).where(Item.city == item_id))
-
-# async def get_item(city, product):
-#     async with async_session() as session:
-#         return await session.scalar(select(Item).where(Item.city == city, Item.product == product))
-
-
-async def get_item(city, product):
-    async with async_session() as session:
-        item = select(Item).where(Item.city == city, Item.product == product)
-        result = await session.execute(item)
-        items = result.fetchall()
-        return items
+        result = await session.scalars(select(Item).where(Item.city == city,
+                                                          Item.service == service_category))
+        return result

@@ -2,7 +2,8 @@ from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton,
                            InlineKeyboardMarkup, InlineKeyboardButton)
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
-from app.database.requests import get_products, get_product_item, get_city_item, get_cities, get_services
+from app.database.requests import (get_products, get_cities, get_services,
+                                   get_item_product, get_item_service)
 
 main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='Товары')],
                                      [KeyboardButton(text='Услуги')],
@@ -13,49 +14,42 @@ main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='Товары')],
 to_main = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='На главную',
                                                                       callback_data='to_main')]])
 
-
-#####################################################
-#             Keyboard for products
-#####################################################
 async def products():
     all_products = await get_products()
     keyboard = InlineKeyboardBuilder()
-
     for product in all_products:
-        keyboard.add(InlineKeyboardButton(text=product.name, callback_data=f'product_{product.name}'))
+        keyboard.add(InlineKeyboardButton(text=product.name,
+                                          callback_data=f'product_{product.name}'))
     return keyboard.adjust(1).as_markup()
 
-#####################################################
-#             Keyboard for cities
-#####################################################
 async def cities():
     all_cities = await get_cities()
     keyboard = InlineKeyboardBuilder()
-
     for city in all_cities:
-        keyboard.add(InlineKeyboardButton(text=city.name, callback_data=f'city_{city.name}'))
+        keyboard.add(InlineKeyboardButton(text=city.name,
+                                          callback_data=f'city_{city.name}'))
     return keyboard.adjust(2).as_markup()
 
-#####################################################
-#             Keyboard for services
-#####################################################
 async def services():
     all_services = await get_services()
     keyboard = InlineKeyboardBuilder()
-
     for service in all_services:
-        keyboard.add(InlineKeyboardButton(text=service.name, callback_data=f'service_{service.name}'))
+        keyboard.add(InlineKeyboardButton(text=service.name,
+                                          callback_data=f'service_{service.name}'))
     return keyboard.adjust(1).as_markup()
 
-#####################################################
-#             Keyboard for item
-#####################################################
-async def items(city_id):
-    all_items = await get_city_item(city_id)
+async def items_product(city, product_category):
+    all_items = await get_item_product(city, product_category)
     keyboard = InlineKeyboardBuilder()
-
     for item in all_items:
-        keyboard.add(InlineKeyboardButton(text=item.name, callback_data=f'item_{item.id}'))
-
+        keyboard.add(InlineKeyboardButton(text=item.summary,
+                                          callback_data=f'item_{item.id}'))
     return keyboard.adjust(1).as_markup()
 
+async def items_service(city, service_category):
+    all_items = await get_item_service(city, service_category)
+    keyboard = InlineKeyboardBuilder()
+    for item in all_items:
+        keyboard.add(InlineKeyboardButton(text=item.summary,
+                                          callback_data=f'item_{item.id}'))
+    return keyboard.adjust(1).as_markup()
