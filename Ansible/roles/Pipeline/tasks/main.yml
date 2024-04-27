@@ -1,7 +1,7 @@
 ---
 
-#- name: prebuild
-#  import_tasks: prebuild.yml
+- name: prebuild
+  import_tasks: prebuild.yml
   
 - name: build
   import_tasks: build.yml
