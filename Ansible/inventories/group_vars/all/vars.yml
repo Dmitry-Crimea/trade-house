@@ -2,6 +2,7 @@
 ansible_os_family: Debian
 
 docker:
+  build_command: docker build -t slav_market .
   user: red_r2005
   dependencies:
     - curl
@@ -15,3 +16,20 @@ docker:
 docker_compose:
   url: https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-{{ ansible_system | lower }}-{{ ansible_architecture }}
   dest_path: /usr/local/bin/docker-compose
+  
+  
+###########################################
+            # For pipeline #
+###########################################
+
+git:
+  repo: https://github.com/Dmitry-Crimea/trade-house.git
+  home_dir: /home
+  user: red_r2005
+  
+remote_host:
+  work_dir: workdir
+  
+ssh:
+  local_path_to_ssh_pvt_key: ./files/red_r2005
+  remote_path_to_ssh_pvt_key: .ssh

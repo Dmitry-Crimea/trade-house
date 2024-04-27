@@ -1,0 +1,6 @@
+---
+
+- name: Run docker build command
+  command: "{{ docker.build_command }}"
+  args:
+    chdir: "{{ remote_host.work_dir }}"
