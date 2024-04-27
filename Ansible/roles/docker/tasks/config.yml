@@ -1,0 +1,13 @@
+---
+  
+- name: Start Docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started
+    
+- name: Add user red_r2005 to docker group
+  user:
+    name: "{{ docker.user }}"
+    groups: docker
+    append: yes

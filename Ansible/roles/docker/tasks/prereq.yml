@@ -1,0 +1,33 @@
+---
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ docker.dependencies }}"
+
+- name: Add Docker GPG key
+  apt_key:
+    url: "{{ docker.GPG_url }}"
+
+- name: Add Docker repository
+  lineinfile:
+    path: "{{ docker.source_list }}"
+    line: "{{ docker.repo }}"
+    create: yes
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    
+- name: Get Docker CE policy
+  shell: apt-cache policy docker-ce
+  register: docker_ce_policy
+
+- name: Display Docker CE policy
+  debug:
+    var: docker_ce_policy.stdout_lines

@@ -1,0 +1,6 @@
+---
+- hosts: docker_host
+#  gather_facts: false
+  roles:
+#    - docker
+    - docker-compose

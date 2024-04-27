@@ -1,0 +1,6 @@
+---
+
+- name: Install Docker engine
+  apt:
+    name: docker-ce
+    state: present

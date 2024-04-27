@@ -1,0 +1,12 @@
+---
+
+- name: prepare to install docker
+  import_tasks: prereq.yml
+  
+- name: install docker
+  import_tasks: install.yml
+
+- name: configure docker
+  import_tasks: config.yml
+  
+  

@@ -1,0 +1,6 @@
+---
+
+- name: Set execute permissions for Docker Compose binary
+  file:
+    path: "{{ docker_compose.dest_path }}"
+    mode: '+x'

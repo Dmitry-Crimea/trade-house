@@ -1,0 +1,3 @@
+{{- if and (.Values.ingress.enabled) (eq (.Capabilities.APIVersions.Has "route.openshift.io/v1") false) }}
+{{- template "ingress.template" . }}
+{{- end }}

@@ -1,0 +1,17 @@
+---
+ansible_os_family: Debian
+
+docker:
+  user: red_r2005
+  dependencies:
+    - curl
+    - software-properties-common
+    - ca-certificates
+    - apt-transport-https
+  source_list: /etc/apt/sources.list.d/docker.list
+  repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable
+  GPG_url: https://download.docker.com/linux/ubuntu/gpg
+
+docker_compose:
+  url: https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-{{ ansible_system | lower }}-{{ ansible_architecture }}
+  dest_path: /usr/local/bin/docker-compose

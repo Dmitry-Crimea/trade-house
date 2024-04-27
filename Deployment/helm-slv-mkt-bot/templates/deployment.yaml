@@ -1,0 +1,85 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: {{ .Chart.Name }}
+  name: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.Replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: {{ .Values.MAX_UNAVAILABLE }}
+      maxSurge: {{ .Values.MAX_SURGE }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        last-restart: {{ now | date "2006-01-02T15:04:05" }}
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      imagePullSecrets:
+        - name: docker-pull-secret
+      containers:
+        - name: {{ .Chart.Name }}
+          env:
+            - name: APP_NAME
+              value: {{ .Chart.Name }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Chart.Name }}-config
+            - secretRef:
+                name: {{ .Chart.Name }}-secret
+          image: {{ .Values.REGISTRY_URL }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.APP_PORT}}
+              protocol: TCP
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          resources:
+            limits:
+              cpu: {{ .Values.APP_CPU_LIMIT }}
+              memory: {{ .Values.APP_MEMORY_LIMIT }}
+            requests:
+              cpu: {{ .Values.APP_CPU_REQ }}
+              memory: {{ .Values.APP_MEMORY_REQ }}
+      dnsConfig:
+        options:
+          - name: single-request
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+
+{{- if .Values.horizontalPodAutoscaler.enabled }}
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Chart.Name }}-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Chart.Name }}
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    resource:
+      name: memory
+      target:
+        averageUtilization: 80
+        type: Utilization
+{{- end }}

@@ -1,0 +1,7 @@
+---
+
+- name: install Docker-compose
+  import_tasks: install.yml
+  
+- name: Configure docker-compose
+  import_tasks: config.yml
