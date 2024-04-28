@@ -3,16 +3,16 @@ from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton,
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
 from app.database.requests import (get_products, get_cities, get_services,
-                                   get_item_product, get_item_service)
+                                   get_item_products, get_item_services)
 
-main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='Товары')],
-                                     [KeyboardButton(text='Услуги')],
-                                     [KeyboardButton(text='О проекте')]],
+main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='🥩 Товары')],
+                                     [KeyboardButton(text='🛠️ Услуги')],
+                                     [KeyboardButton(text='📝 О проекте')]],
                            resize_keyboard=True,
                            input_field_placeholder='Выберите пункт меню...')
 
-to_main = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='На главную',
-                                                                      callback_data='to_main')]])
+to_main = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text='На главную', callback_data='to_main')]])
 
 async def products():
     all_products = await get_products()
@@ -39,7 +39,7 @@ async def services():
     return keyboard.adjust(1).as_markup()
 
 async def items_product(city, product_category):
-    all_items = await get_item_product(city, product_category)
+    all_items = await get_item_products(city, product_category)
     keyboard = InlineKeyboardBuilder()
     for item in all_items:
         keyboard.add(InlineKeyboardButton(text=item.summary,
@@ -47,7 +47,7 @@ async def items_product(city, product_category):
     return keyboard.adjust(1).as_markup()
 
 async def items_service(city, service_category):
-    all_items = await get_item_service(city, service_category)
+    all_items = await get_item_services(city, service_category)
     keyboard = InlineKeyboardBuilder()
     for item in all_items:
         keyboard.add(InlineKeyboardButton(text=item.summary,

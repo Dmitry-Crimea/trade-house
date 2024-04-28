@@ -6,8 +6,8 @@ from aiogram.fsm.context import FSMContext
 
 import app.keyboards as kb
 import app.database.requests as rq
-from app.database.requests import (get_products, get_cities, get_services,
-                                   get_item_product, get_item_service)
+from app.database.requests import (get_products, get_cities, get_services,get_item_product,
+                                   get_item_products, get_item_service, get_item_services)
 
 router = Router()
 
@@ -32,13 +32,13 @@ async def cmd_start(message: Message):
                                 reply_markup=kb.main)
 
 
-@router.message(F.text == 'Товары')
+@router.message(F.text == '🥩 Товары')
 async def cmd_test(message: Message):
     await message.answer('Выберите категорию', reply_markup=await kb.products())
 
 
 
-@router.message(F.text == 'Услуги')
+@router.message(F.text == '🛠️ Услуги')
 async def cmd_test(message: Message):
     await message.answer('Выберите категорию', reply_markup=await kb.services())
 
@@ -80,7 +80,7 @@ async def item(callback: CallbackQuery, state: FSMContext):
 
     elif 'service_category' in data:
         service_category = data.get('service_category')
-        items = await get_item_product(city, service_category)
+        items = await get_item_service(city, service_category)
         if items:
             await callback.message.answer(f'Выберите поставщика:',
                                            reply_markup=await kb.items_service(city, service_category))
@@ -89,6 +89,7 @@ async def item(callback: CallbackQuery, state: FSMContext):
     else:
          await callback.message.answer (f"В этом городе пока нет товаров или услуг для данной категории")
     await state.clear()
+    await callback.message.delete()
 
 
 @router.callback_query(F.data.startswith('item_'))
