@@ -29,7 +29,7 @@ async def get_item(item_id):
 
 async def get_item_product(city, product_category):
     async with async_session() as session:
-        result = await session.scalars(select(Item).where((Item.city == city) &
+        result = await session.scalar(select(Item).where((Item.city == city) &
                                                           (Item.product == product_category)))
         return result
 

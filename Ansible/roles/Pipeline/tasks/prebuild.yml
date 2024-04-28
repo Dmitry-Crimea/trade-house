@@ -14,5 +14,3 @@
   git:
     repo: "{{ git.repo }}"
     dest: "{{ remote_host.work_dir }}"
-#    accept_hostkey: yes
-#    key_file: "{{ git.home_dir }}/{{ git.user }}/{{ ssh.remote_path_to_ssh_pvt_key }}"

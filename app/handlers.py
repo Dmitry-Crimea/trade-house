@@ -6,6 +6,8 @@ from aiogram.fsm.context import FSMContext
 
 import app.keyboards as kb
 import app.database.requests as rq
+from app.database.requests import (get_products, get_cities, get_services,
+                                   get_item_product, get_item_service)
 
 router = Router()
 
@@ -64,16 +66,26 @@ async def service(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data.startswith('city_'))
 async def item(callback: CallbackQuery, state: FSMContext):
     city = callback.data.split('_')[1]
-    # await state.update_data(city=city)
     data = await state.get_data()
+    # await state.update_data(city=city)
+
     if 'product_category' in data:
         product_category = data.get('product_category')
-        await callback.message.answer(f'Выберите поставщика:',
-                                      reply_markup=await kb.items_product(city, product_category))
+        items = await get_item_product(city, product_category)
+        if items:
+            await callback.message.answer(f'Выберите поставщика:',
+                                          reply_markup=await kb.items_product(city, product_category))
+        else:
+            await callback.message.answer(f"В этом городе пока нет товаров для данной категории")
+
     elif 'service_category' in data:
-         service_category = data.get('service_category')
-         await callback.message.answer(f'Выберите поставщика:',
-                                       reply_markup=await kb.items_service(city, service_category))
+        service_category = data.get('service_category')
+        items = await get_item_product(city, service_category)
+        if items:
+            await callback.message.answer(f'Выберите поставщика:',
+                                           reply_markup=await kb.items_service(city, service_category))
+        else:
+            await callback.message.answer(f"В этом городе пока нет услуг для данной категории")
     else:
          await callback.message.answer (f"В этом городе пока нет товаров или услуг для данной категории")
     await state.clear()

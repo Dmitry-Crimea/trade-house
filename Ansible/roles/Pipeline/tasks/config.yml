@@ -1,0 +1,7 @@
+---
+
+- name: Make workdir in remote host
+  file:
+    path: "{{ remote_host.work_dir }}"
+    state: absent
+  become: yes
