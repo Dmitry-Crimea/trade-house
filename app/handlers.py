@@ -42,6 +42,10 @@ async def cmd_test(message: Message):
 async def cmd_test(message: Message):
     await message.answer('Выберите категорию', reply_markup=await kb.services())
 
+@router.message(F.text == '💼 Вакансии')
+async def cmd_test(message: Message):
+    await message.answer('Данный раздел находится в разработке...')
+
 
 @router.callback_query(F.data.startswith('product_'))
 async def product(callback: CallbackQuery, state: FSMContext):
