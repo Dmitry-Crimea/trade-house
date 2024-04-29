@@ -5,7 +5,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from app.database.requests import (get_products, get_cities, get_services,
                                    get_item_products, get_item_services)
 
-main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='🥩 Товары')],
+main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='🛒 Товары')],
                                      [KeyboardButton(text='🛠️ Услуги')],
                                      [KeyboardButton(text='📝 О проекте')]],
                            resize_keyboard=True,

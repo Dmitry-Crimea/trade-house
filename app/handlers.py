@@ -32,7 +32,7 @@ async def cmd_start(message: Message):
                                 reply_markup=kb.main)
 
 
-@router.message(F.text == '🥩 Товары')
+@router.message(F.text == '🛒 Товары')
 async def cmd_test(message: Message):
     await message.answer('Выберите категорию', reply_markup=await kb.products())
 
