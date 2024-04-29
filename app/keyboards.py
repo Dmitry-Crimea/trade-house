@@ -7,7 +7,8 @@ from app.database.requests import (get_products, get_cities, get_services,
 
 main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='🛒 Товары')],
                                      [KeyboardButton(text='🛠️ Услуги')],
-                                     [KeyboardButton(text='📜 О проекте')]],
+                                     [KeyboardButton(text='📜 О проекте')]
+                                     [KeyboardButton(text='💼 Вакансии')]],
                            resize_keyboard=True,
                            input_field_placeholder='Выберите пункт меню...')
 
