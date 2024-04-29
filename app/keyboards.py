@@ -5,10 +5,14 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from app.database.requests import (get_products, get_cities, get_services,
                                    get_item_products, get_item_services)
 
-main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='🛒 Товары')],
-                                     [KeyboardButton(text='🛠️ Услуги')],
-                                     [KeyboardButton(text='📜 О проекте')]
-                                     [KeyboardButton(text='💼 Вакансии')]],
+main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='🛒 Товары'), KeyboardButton(text='🛠️ Услуги')],
+                                     [KeyboardButton(text='💼 Вакансии')],
+                                     [KeyboardButton(text='📜 О проекте')]],
+                           resize_keyboard=True,
+                           input_field_placeholder='Выберите пункт меню...')
+
+job_openings = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='🔍 Поиск'), KeyboardButton(text='👨‍🔧 Требуются')],
+                                             [KeyboardButton(text='↩️ Назад')]],
                            resize_keyboard=True,
                            input_field_placeholder='Выберите пункт меню...')
 
@@ -45,7 +49,7 @@ async def items_product(city, product_category):
     for item in all_items:
         keyboard.add(InlineKeyboardButton(text=item.summary,
                                           callback_data=f'item_{item.id}'))
-    return keyboard.adjust(1).as_markup()
+    return keyboard.adjust(2).as_markup()
 
 async def items_service(city, service_category):
     all_items = await get_item_services(city, service_category)
@@ -53,4 +57,4 @@ async def items_service(city, service_category):
     for item in all_items:
         keyboard.add(InlineKeyboardButton(text=item.summary,
                                           callback_data=f'item_{item.id}'))
-    return keyboard.adjust(1).as_markup()
+    return keyboard.adjust(2).as_markup()

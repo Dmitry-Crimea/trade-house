@@ -31,6 +31,21 @@ async def cmd_start(message: Message):
     await message.answer('Добро пожаловать в торговый дом - "Славянский базар"!',
                                 reply_markup=kb.main)
 
+@router.message(F.text == '💼 Вакансии')
+async def cmd_test(message: Message):
+    await message.answer('Выберите раздел', reply_markup=kb.job_openings)
+
+@router.message(F.text == '🔍 Поиск')
+async def cmd_test(message: Message):
+    await message.answer('Данный раздел находится в разработке')
+
+@router.message(F.text == '👨‍🔧 Требуются')
+async def cmd_test(message: Message):
+    await message.answer('Данный раздел находится в разработке')
+
+@router.message(F.text == '↩️ Назад')
+async def cmd_test(message: Message):
+    await message.answer('Вы вернулись на главную', reply_markup=kb.main)
 
 @router.message(F.text == '🛒 Товары')
 async def cmd_test(message: Message):
@@ -42,9 +57,9 @@ async def cmd_test(message: Message):
 async def cmd_test(message: Message):
     await message.answer('Выберите категорию', reply_markup=await kb.services())
 
-@router.message(F.text == '💼 Вакансии')
-async def cmd_test(message: Message):
-    await message.answer('Данный раздел находится в разработке...')
+# @router.message(F.text == '💼 Вакансии')
+# async def cmd_test(message: Message):
+#     await message.answer('Данный раздел находится в разработке...')
 
 
 @router.callback_query(F.data.startswith('product_'))
